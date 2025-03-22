@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Entities.Entities.Product>
+﻿@model IEnumerable<Business.Dto.ProductDto>
 @{
     ViewData["Title"] = "Ürün Yönetimi";
 }
@@ -11,6 +11,8 @@
             <th>Ürün Adı</th>
             <th>Fiyat</th>
             <th>Kategori</th>
+            <th>Onay Durumu</th>
+            <th>Ana Sayfa?</th>
             <th>İşlemler</th>
         </tr>
     </thead>
@@ -20,15 +22,19 @@
             <tr>
                 <td>@product.Name</td>
                 <td>@product.Price</td>
-                <td>@(product.Category?.Name ?? "Belirtilmemiş")</td>
+                <td>@product.CategoryName</td>
+                <td>@(product.IsApprovew ? "Onaylı" : "Onaysız")</td>
+                <td>@(product.IsHome ? "Evet" : "Hayır")</td>
+
                 <td>
-                    <!-- Güncelleme sayfasına yönlendirme -->
                     <a class="btn btn-sm btn-warning"
                        asp-action="ProductUpdate"
                        asp-route-id="@product.Id">Güncelle</a>
 
-                    <!-- Silme işlemi form-post olarak yapılıyor (isteğe göre ayrı bir sayfa da kullanılabilir) -->
-                    <form asp-action="DeleteProduct" asp-route-id="@product.Id" method="post" style="display:inline;">
+                    <form asp-action="DeleteProduct"
+                          asp-route-id="@product.Id"
+                          method="post"
+                          style="display:inline;">
                         <button type="submit"
                                 class="btn btn-sm btn-danger"
                                 onclick="return confirm('Silmek istediğinize emin misiniz?');">
@@ -40,3 +46,5 @@
         }
     </tbody>
 </table>
+
+<a class="btn btn-primary mt-3" asp-action="ProductAdd">Yeni Ürün Ekle</a>

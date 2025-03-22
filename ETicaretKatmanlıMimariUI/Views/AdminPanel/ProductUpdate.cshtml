@@ -1,0 +1,73 @@
+﻿@model ETicaretKatmanlıMimariUI.ViewModels.ProductViewModel
+
+@{
+    ViewData["Title"] = "Ürün Güncelleme";
+}
+
+<h2>Ürün Güncelleme</h2>
+
+<form asp-action="ProductUpdate" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <!-- Ürün Adı -->
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <!-- Fiyat -->
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <!-- Kategori -->
+    <div class="mb-3">
+        <label asp-for="CategoryId" class="form-label">Kategori</label>
+        <select asp-for="CategoryId" asp-items="Model.CategoryList" class="form-control">
+            <option value="">Kategori Seçiniz</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <!-- Onaylı mı? -->
+    <div class="mb-3">
+        <label asp-for="IsApprovew" class="form-label"></label>
+        <input asp-for="IsApprovew" class="form-check-input" type="checkbox" />
+        <span asp-validation-for="IsApprovew" class="text-danger"></span>
+    </div>
+
+    <!-- Ana Sayfa mı? -->
+    <div class="mb-3">
+        <label asp-for="IsHome" class="form-label"></label>
+        <input asp-for="IsHome" class="form-check-input" type="checkbox" />
+        <span asp-validation-for="IsHome" class="text-danger"></span>
+    </div>
+
+    <!-- Açıklama -->
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <!-- Resim -->
+    <div class="mb-3">
+        <label asp-for="Image" class="form-label"></label>
+        <input asp-for="Image" class="form-control" />
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+    <!-- Stok -->
+    <div class="mb-3">
+        <label asp-for="Stock" class="form-label"></label>
+        <input asp-for="Stock" class="form-control" />
+        <span asp-validation-for="Stock" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <a asp-action="ManageProduct" class="btn btn-secondary">Vazgeç</a>
+</form>

@@ -1,7 +1,11 @@
 ﻿using Business.Abstract;
+using Business.Dto;
 using Entities.Entities;
+using ETicaretKatmanlıMimariUI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace ETicaretKatmanlıMimariUI.Controllers
 {
@@ -26,60 +30,141 @@ namespace ETicaretKatmanlıMimariUI.Controllers
         // 1) Ürün Listeleme (Index)
         public IActionResult ManageProduct()
         {
-            var products = _adminProductService.GetAllProducts();
-            return View(products); // Views/Admin/ManageProduct.cshtml
+            var productDtos = _adminProductService.GetAllProducts();
+            return View(productDtos);
         }
 
         // 2) Ürün Ekleme (Opsiyonel)
         [HttpGet]
         public IActionResult ProductAdd()
         {
-            return View(); // Views/Admin/ProductAdd.cshtml
+            // Kategori listesini al (Entity veya CategoryDto fark etmez)
+            var categories = _adminCategoryService.GetAllCategories();
+
+            // ViewModel oluştur
+            var viewModel = new ProductViewModel
+            {
+                // CategoryList'i dolduruyoruz:
+                CategoryList = new SelectList(categories, "Id", "Name")
+            };
+
+            return View(viewModel); // Views/Admin/ProductAdd.cshtml
         }
 
+        
         [HttpPost]
-        public IActionResult ProductAdd(Product product)
+        public IActionResult ProductAdd(ProductViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(product);
+            // Remove these properties from ModelState validation
+            ModelState.Remove("CategoryList");
+            ModelState.Remove("CategoryName");
 
-            _adminProductService.AddProduct(product);
+            if (!ModelState.IsValid)
+            {
+                // Validasyon hatası olursa dropdown bozulmasın diye tekrar doldur:
+                var categories = _adminCategoryService.GetAllCategories();
+                model.CategoryList = new SelectList(categories, "Id", "Name", model.CategoryId);
+
+                return View(model);
+            }
+
+            // ViewModel → DTO dönüşümü
+            var productDto = new ProductDto
+            {
+                Name = model.Name,
+                Price = model.Price,
+                IsApprovew = model.IsApprovew,
+                IsHome = model.IsHome,
+                Description = model.Description,
+                Image = model.Image,
+                Stock = model.Stock,
+                CategoryId = model.CategoryId
+            };
+
+            _adminProductService.AddProduct(productDto);
+
             return RedirectToAction("ManageProduct");
         }
-
-        // 3) Ürün Güncelleme
         [HttpGet]
         public IActionResult ProductUpdate(int id)
         {
-            var product = _adminProductService.GetProductById(id);
-            if (product == null)
+            // ID'ye göre DTO'yu al
+            var productDto = _adminProductService.GetProductById(id);
+            if (productDto == null)
                 return NotFound();
 
-            return View(product); // Views/Admin/ProductUpdate.cshtml
+            // DTO → ViewModel dönüşümü
+            var viewModel = new ProductViewModel
+            {
+                Id = productDto.Id,
+                Name = productDto.Name,
+                Price = productDto.Price,
+                IsApprovew = productDto.IsApprovew,
+                IsHome = productDto.IsHome,
+                Description = productDto.Description,
+                Image = productDto.Image,
+                Stock = productDto.Stock,
+                CategoryId = productDto.CategoryId
+            };
+
+            // Kategori listesini doldur
+            var categories = _adminCategoryService.GetAllCategories();
+            viewModel.CategoryList = new SelectList(categories, "Id", "Name", viewModel.CategoryId);
+
+            return View(viewModel); // Views/Admin/ProductUpdate.cshtml
         }
 
         [HttpPost]
-        public IActionResult ProductUpdate(Product product)
+        
+        public IActionResult ProductUpdate(ProductViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(product);
+            // Remove these properties from ModelState validation
+            ModelState.Remove("CategoryList");
+            ModelState.Remove("CategoryName");
 
-            _adminProductService.UpdateProduct(product);
+            if (!ModelState.IsValid)
+            {
+                // ModelState hatalarını konsola yazdıralım
+                foreach (var key in ModelState.Keys)
+                {
+                    var state = ModelState[key];
+                    foreach (var error in state.Errors)
+                    {
+                        Console.WriteLine($"Key: {key}, Error: {error.ErrorMessage}");
+                    }
+                }
+                // Validasyon hatası → dropdown bozulmasın
+                var categories = _adminCategoryService.GetAllCategories();
+                model.CategoryList = new SelectList(categories, "Id", "Name", model.CategoryId);
+
+                return View(model);
+            }
+
+            // ViewModel → DTO dönüşümü
+            var productDto = new ProductDto
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Price = model.Price,
+                IsApprovew = model.IsApprovew,
+                IsHome = model.IsHome,
+                Description = model.Description,
+                Image = model.Image,
+                Stock = model.Stock,
+                CategoryId = model.CategoryId
+            };
+
+            _adminProductService.UpdateProduct(productDto);
+
             return RedirectToAction("ManageProduct");
         }
-
         // 4) Ürün Silme
         [HttpPost]
         public IActionResult DeleteProduct(int id)
         {
-            var product = _adminProductService.GetProductById(id);
-            if (product != null)
-            {
-                _adminProductService.DeleteProduct(product);
-            }
+            _adminProductService.DeleteProduct(id);
             return RedirectToAction("ManageProduct");
         }
-
 
         /* ======================= CATEGORY ======================= */
 
@@ -154,20 +239,43 @@ namespace ETicaretKatmanlıMimariUI.Controllers
         [HttpGet]
         public IActionResult OrderUpdate(int id)
         {
+            // 1) Veritabanından Order'ı bul
             var order = _adminOrderService.GetOrderById(id);
-            if (order == null)
-                return NotFound();
+            if (order == null) return NotFound();
 
-            return View(order); // Views/Admin/OrderUpdate.cshtml
+            // 2) Entity → ViewModel dönüşümü
+            var viewModel = new OrderViewModel
+            {
+                Id = order.Id,
+                OrderNumber = order.OrderNumber,
+                UserName = order.UserName,
+                Total = order.Total,
+                orderState = (ETicaretKatmanlıMimariUI.ViewModels.EnumOrderState)order.orderState
+            };
+
+            return View(viewModel); // Views/Admin/OrderUpdate.cshtml
         }
 
+        // POST
         [HttpPost]
-        public IActionResult OrderUpdate(Order order)
+        public IActionResult OrderUpdate(OrderViewModel model)
         {
             if (!ModelState.IsValid)
-                return View(order);
+            {
+                return View(model);
+            }
 
-            _adminOrderService.UpdateOrder(order);
+            // 1) Eski kaydı bul
+            var existingOrder = _adminOrderService.GetOrderById(model.Id);
+            if (existingOrder == null) return NotFound();
+
+            // 2) ViewModel → Entity/DTO güncelle
+            existingOrder.orderState = (Entities.Enum.EnumOrderState)model.orderState;
+            // (OrderNumber, Total, vs. eğer güncellenecekse)
+
+            // 3) Servise güncel kaydı kaydet
+            _adminOrderService.UpdateOrder(existingOrder);
+
             return RedirectToAction("ManageOrders");
         }
 

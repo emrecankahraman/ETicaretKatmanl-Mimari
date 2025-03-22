@@ -22,14 +22,16 @@ namespace ETicaretKatmanlıMimariUI.Controllers
         public IActionResult Index(int id = 0)
         {
             var categories = _categoryService.GetAll();
-            var products = id == 0 ? _productService.GetAll() : _productService.GetByCategory(id);
+
+            // Sadece IsApprovew = true olan ürünleri getir
+            var products = id == 0
+                ? _productService.GetAll(p => p.IsApprovew == true)
+                : _productService.GetAll(p => p.CategoryId == id && p.IsApprovew == true);
 
             ViewBag.Id = id;
             ViewBag.Categories = categories;
-
             return View(products);
         }
-
 
         public IActionResult Details(int id)
         {
@@ -44,10 +46,10 @@ namespace ETicaretKatmanlıMimariUI.Controllers
             ViewBag.Id = id ?? 0;
             ViewBag.Categories = categories;
 
-            // Ürünleri seçilen kategoriye göre filtrele
+            // Ürünleri seçilen kategoriye göre filtrele ve sadece onaylı ürünleri göster
             var products = (id == null || id == 0)
-                ? _productService.GetAll()
-                : _productService.GetAll(p => p.CategoryId == id);
+                ? _productService.GetAll(p => p.IsApprovew == true)
+                : _productService.GetAll(p => p.CategoryId == id && p.IsApprovew == true);
 
             return View(products);
         }

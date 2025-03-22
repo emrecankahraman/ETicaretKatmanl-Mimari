@@ -1,6 +1,6 @@
 ﻿using Entities.Entities;
 
-namespace ETicaretKatmanlıMimariUI.ViewModels
+namespace ETicaretKatmanlıMimariUI.ViewModel
 {
     
         public class ListViewModel

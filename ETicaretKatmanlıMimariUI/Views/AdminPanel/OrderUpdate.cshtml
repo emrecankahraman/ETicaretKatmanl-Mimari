@@ -1,4 +1,4 @@
-﻿@model Entities.Entities.Order
+﻿@model ETicaretKatmanlıMimariUI.ViewModels.OrderViewModel
 @{
     ViewData["Title"] = "Sipariş Güncelleme";
 }
@@ -6,32 +6,34 @@
 <h2>Sipariş Güncelleme</h2>
 
 <form asp-action="OrderUpdate" method="post">
+    @Html.AntiForgeryToken()
+
     <input type="hidden" asp-for="Id" />
 
     <div class="mb-3">
-        <label asp-for="OrderNumber" class="form-label">Sipariş Numarası</label>
+        <label asp-for="OrderNumber" class="form-label"></label>
         <input asp-for="OrderNumber" class="form-control" readonly />
         <span asp-validation-for="OrderNumber" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="UserName" class="form-label">Kullanıcı Adı</label>
+        <label asp-for="UserName" class="form-label"></label>
         <input asp-for="UserName" class="form-control" readonly />
         <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Total" class="form-label">Toplam Tutar</label>
+        <label asp-for="Total" class="form-label"></label>
         <input asp-for="Total" class="form-control" readonly />
         <span asp-validation-for="Total" class="text-danger"></span>
     </div>
 
+    <!-- Enum dropdown -->
     <div class="mb-3">
-        <label asp-for="orderState" class="form-label">Sipariş Durumu</label>
-        <select asp-for="orderState" class="form-control">
-            <option value="Waiting">Waiting</option>
-            <option value="Completed">Completed</option>
-            <option value="Canceled">Canceled</option>
+        <label asp-for="orderState" class="form-label"></label>
+        <!-- Tag helper yardımıyla enum'u dropdown şeklinde gösterir.
+             Display(Name="...") attribute'larını da kullanır. -->
+        <select asp-for="orderState" asp-items="Html.GetEnumSelectList<Entities.Enum.EnumOrderState>()" class="form-control">
         </select>
         <span asp-validation-for="orderState" class="text-danger"></span>
     </div>
