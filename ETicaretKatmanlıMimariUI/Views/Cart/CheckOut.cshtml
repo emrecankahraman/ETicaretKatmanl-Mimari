@@ -1,0 +1,45 @@
+﻿@using ETicaretKatmanlıMimariUI.ViewModels
+@model ShippingDetails
+@{
+    ViewData["Title"] = "CheckOut";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Ödeme Bilgileri</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Sipariş Bilgileriniz</h2>
+            <p>Lütfen sipariş bilgilerinizi doldurunuz.</p>
+            <hr />
+
+            <form asp-action="CheckOut" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Kullanıcı Adı</label>
+                    <input type="text" class="form-control" asp-for="UserName" value="@User.Identity.Name" readonly>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Adres Tanımı</label>
+                    <input type="text" class="form-control" asp-for="AdressTitle">
+                    <span asp-validation-for="AdressTitle" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Adres</label>
+                    <textarea class="form-control" asp-for="Adress"></textarea>
+                    <span asp-validation-for="Adress" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Şehir</label>
+                    <input type="text" class="form-control" asp-for="City">
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success">Siparişi Tamamla</button>
+            </form>
+        </div>
+    </div>
+</div>

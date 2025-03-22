@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Entities.Entities.Product>
+
+@{
+    ViewData["Title"] = "Ürün Listesi";
+    var categoryList = (IEnumerable<Entities.Entities.Category>)ViewBag.Categories;
+
+}
+
+<div class="container mt-3">
+    <div class="row">
+        <!-- Sol tarafta Kategori Listesi -->
+        <div class="col-md-3">
+            <!-- Kategorileri Partial View olarak ekliyoruz -->
+            @await Html.PartialAsync("_CategoryList", categoryList)
+        </div>
+
+        <!-- Sağ tarafta Ürün Listesi -->
+        <div class="col-md-9">
+            <!-- Ürünleri Partial View olarak ekliyoruz -->
+            @await Html.PartialAsync("_ProductList", Model)
+        </div>
+    </div>
+</div>

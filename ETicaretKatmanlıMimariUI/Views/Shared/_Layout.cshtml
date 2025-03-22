@@ -1,0 +1,101 @@
+﻿@using ETicareBitirme.Core
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ETicaret</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">ETicaret</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Ana Sayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/Index">Ürünler</a>
+                        </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <!-- Kullanıcı giriş yaptıysa -->
+                            <li class="nav-item">
+                                <span class="nav-link disabled">
+                                    Merhaba, @User.Identity.Name
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="nav-link">
+                                    <button type="submit" class="btn btn-link p-0" style="text-decoration: none;">
+                                        Çıkış
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <!-- Kullanıcı giriş yapmadıysa -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Account/Login">Giriş</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="adminMenu" role="button" data-bs-toggle="dropdown">
+                                    Yönetim
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminMenu">
+                                    <li><a class="dropdown-item" href="/AdminPanel/ManageOrders">Sipariş Yönetimi</a></li>
+                                    <li><a class="dropdown-item" href="/AdminPanel/ManageProduct">Ürün yönetimi</a></li>
+                                    <li><a class="dropdown-item" href="/AdminPanel/ManageCategory">Kategori yönetimi</a></li>
+
+                                </ul>
+                            </li>
+                        }
+                        <!-- Sepet İkonu ve Ürün Sayısı -->
+                        <li class="nav-item position-relative">
+                            <a class="nav-link" href="/Cart/Index">
+                                <i class="fa fa-shopping-cart"></i>
+                                @if (SessionHelper.Count > 0)
+                                {
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        @SessionHelper.Count
+                                        <span class="visually-hidden">Sepetteki ürün sayısı</span>
+                                    </span>
+                                }
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mt-4">
+        @RenderBody()
+    </div>
+
+    <footer class="text-center p-3 bg-light">
+        &copy; @DateTime.Now.Year - ETicaret
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

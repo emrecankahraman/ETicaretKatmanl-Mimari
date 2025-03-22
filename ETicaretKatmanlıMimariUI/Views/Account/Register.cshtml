@@ -1,0 +1,47 @@
+﻿@model ETicaretKatmanlıMimariUI.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Kayıt Ol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kayıt Ol</h2>
+<hr />
+<form asp-action="Register" method="post">
+    <div class="mb-3">
+        <label class="form-label">İsim</label>
+        <input class="form-control" asp-for="Name" />
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Soyisim</label>
+        <input class="form-control" asp-for="SurName" />
+        <span class="text-danger" asp-validation-for="SurName"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Kullanıcı Adı</label>
+        <input class="form-control" asp-for="UserName" />
+        <span class="text-danger" asp-validation-for="UserName"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">E-posta</label>
+        <input class="form-control" asp-for="Email" />
+        <span class="text-danger" asp-validation-for="Email"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Şifre</label>
+        <input class="form-control" asp-for="Password" type="password" />
+        <span class="text-danger" asp-validation-for="Password"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Şifre Tekrar</label>
+        <input class="form-control" asp-for="ConfirmPassword" type="password" />
+        <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+</form>

@@ -1,0 +1,25 @@
+﻿@model Entities.Entities.Category
+@{
+    ViewData["Title"] = "Kategori Güncelleme";
+}
+
+<h2>Kategori Güncelleme</h2>
+
+<form asp-action="CategoryUpdate" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Kategori Adı</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Açıklama</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a class="btn btn-secondary" asp-action="ManageCategory">Geri Dön</a>
+</form>

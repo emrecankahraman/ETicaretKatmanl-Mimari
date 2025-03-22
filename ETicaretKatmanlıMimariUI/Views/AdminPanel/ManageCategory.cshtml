@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Entities.Entities.Category>
+@{
+    ViewData["Title"] = "Kategori Yönetimi";
+}
+
+<h2>Kategori Yönetimi</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Kategori Adı</th>
+            <th>Açıklama</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+                <tr>
+                    <td>@category.Name</td>
+                    <td>@category.Description</td>
+                    <td>
+                        <a class="btn btn-sm btn-warning"
+                           asp-action="CategoryUpdate"
+                           asp-route-id="@category.Id">Güncelle</a>
+                        <form asp-action="DeleteCategory" asp-route-id="@category.Id" method="post" style="display:inline;">
+                            <button type="submit"
+                                    class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Silmek istediğinize emin misiniz?');">
+                                Sil
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Yeni kategori ekleme butonu (varsa ayrı aksiyon) -->
+<a class="btn btn-primary mt-3" asp-action="CategoryAdd">Yeni Kategori Ekle</a>

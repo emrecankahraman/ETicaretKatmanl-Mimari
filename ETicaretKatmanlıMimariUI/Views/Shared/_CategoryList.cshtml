@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Entities.Entities.Category>
+
+<ul class="list-group">
+    <!-- Tüm Kategoriler Linki -->
+    <a class="list-group-item @(ViewBag.Id == 0 ? "active" : "")" href="/Home/Index/">
+        >> Tüm Kategoriler
+    </a>
+
+    <!-- Diğer Kategoriler -->
+    @foreach (var category in Model)
+    {
+        <a class="list-group-item @(category.Id == ViewBag.Id ? "active" : "")" href="/Home/Index/@category.Id">
+            >> @category.Name
+        </a>
+    }
+</ul>

@@ -1,0 +1,65 @@
+﻿@using ETicaretKatmanlıMimariUI.ViewModels
+@model IEnumerable<CardItem>
+@{
+    ViewData["Title"] = "Sepet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Sepet</h1>
+<hr />
+@if (!Model.Any())
+{
+    <div class="alert alert-danger" role="alert">
+        Sepetiniz Boş
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Ürün Adı</th>
+                <th>Fiyat</th>
+                <th>Adet</th>
+                <th>Toplam</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>
+                        @item.Product.Price.ToString("c",
+                                 new System.Globalization.CultureInfo("tr-TR"))
+                    </td>
+                    <td>@item.Quantity</td>
+                    <td>
+                        @((item.Product.Price * item.Quantity)
+                            .ToString("c", new System.Globalization.CultureInfo("tr-TR")))
+                    </td>
+                    <td>
+                        <a class="btn btn-danger"
+                           asp-action="Remove"
+                           asp-route-id="@item.Product.Id">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Toplam Tutar</td>
+                <td>
+                    @ViewBag.Total.ToString("c",
+                             new System.Globalization.CultureInfo("tr-TR"))
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+}
+
+<div class="w-75">
+    <a asp-action="List" asp-controller="Home" class="btn btn-secondary float-start">Alışverişe Devam Et</a>
+    <a asp-action="CheckOut" asp-controller="Order" class="btn btn-primary float-end">Alışverişi Tamamla</a>
+</div>

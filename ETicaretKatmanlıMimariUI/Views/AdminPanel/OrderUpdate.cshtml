@@ -1,0 +1,41 @@
+﻿@model Entities.Entities.Order
+@{
+    ViewData["Title"] = "Sipariş Güncelleme";
+}
+
+<h2>Sipariş Güncelleme</h2>
+
+<form asp-action="OrderUpdate" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="OrderNumber" class="form-label">Sipariş Numarası</label>
+        <input asp-for="OrderNumber" class="form-control" readonly />
+        <span asp-validation-for="OrderNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UserName" class="form-label">Kullanıcı Adı</label>
+        <input asp-for="UserName" class="form-control" readonly />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Total" class="form-label">Toplam Tutar</label>
+        <input asp-for="Total" class="form-control" readonly />
+        <span asp-validation-for="Total" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="orderState" class="form-label">Sipariş Durumu</label>
+        <select asp-for="orderState" class="form-control">
+            <option value="Waiting">Waiting</option>
+            <option value="Completed">Completed</option>
+            <option value="Canceled">Canceled</option>
+        </select>
+        <span asp-validation-for="orderState" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a class="btn btn-secondary" asp-action="ManageOrders">Geri Dön</a>
+</form>

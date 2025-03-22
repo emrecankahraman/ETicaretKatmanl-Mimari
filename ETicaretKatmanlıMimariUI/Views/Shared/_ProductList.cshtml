@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Entities.Entities.Product>
+
+<!-- Ürünlerin listelendiği partial view -->
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var product in Model)
+    {
+        <div class="col">
+            <div class="card h-100">
+                <img src="@product.Image" alt="@product.Name" class="card-img-top" style="height:200px; object-fit:contain;" />
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">@product.Description</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">@product.Price.ToString("c")</small>
+                    <a class="btn btn-primary btn-sm float-end" href="/Home/Details/@product.Id">
+                        >> Ürün Detay
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

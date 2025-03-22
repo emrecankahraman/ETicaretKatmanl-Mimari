@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Entities.Entities.Product>
+@{
+    ViewData["Title"] = "Ürün Yönetimi";
+}
+
+<h2>Ürün Yönetimi</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Ürün Adı</th>
+            <th>Fiyat</th>
+            <th>Kategori</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>@(product.Category?.Name ?? "Belirtilmemiş")</td>
+                <td>
+                    <!-- Güncelleme sayfasına yönlendirme -->
+                    <a class="btn btn-sm btn-warning"
+                       asp-action="ProductUpdate"
+                       asp-route-id="@product.Id">Güncelle</a>
+
+                    <!-- Silme işlemi form-post olarak yapılıyor (isteğe göre ayrı bir sayfa da kullanılabilir) -->
+                    <form asp-action="DeleteProduct" asp-route-id="@product.Id" method="post" style="display:inline;">
+                        <button type="submit"
+                                class="btn btn-sm btn-danger"
+                                onclick="return confirm('Silmek istediğinize emin misiniz?');">
+                            Sil
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
