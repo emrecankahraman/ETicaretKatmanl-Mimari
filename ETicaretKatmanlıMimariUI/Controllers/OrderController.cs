@@ -54,14 +54,11 @@ namespace ETicaretKatmanlıMimariUI.Controllers
                         City = details.City
                     };
 
-                    // Siparişi veritabanına kaydet
                     _orderService.CreateOrder(cartItemDtos, orderDto);
 
-                    // Sepeti temizle
                     cartItemDtos.Clear();
                     _cartService.SaveCart(CartSessionKey, cartItemDtos, HttpContext);
 
-                    // Başarılı olursa bir "OrderSuccess" sayfasına yönlendirebilirsiniz
                     return RedirectToAction("OrderSuccess");
                 }
                 catch (Exception ex)
@@ -71,7 +68,6 @@ namespace ETicaretKatmanlıMimariUI.Controllers
                 }
             }
 
-            // ModelState geçerli değilse formu tekrar göster
             return View(details);
         }
 

@@ -39,7 +39,7 @@ builder.Services.AddScoped<IProductDal, EfProductDal>();
 builder.Services.AddScoped<ICartService, CartManager>();
 
 builder.Services.AddScoped<IOrderService, OrderManager>();
-builder.Services.AddScoped<IOrderDal, EfOrderDal>(); // Bu satýrý ekle
+builder.Services.AddScoped<IOrderDal, EfOrderDal>(); 
 
 builder.Services.AddScoped<IOrderLineService, OrderLineManager>();
 builder.Services.AddScoped<IOrderLineDal, EfOrderLineDal>();

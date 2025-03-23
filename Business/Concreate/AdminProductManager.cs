@@ -1,5 +1,5 @@
 ﻿using Business.Abstract;
-using Business.Dto; // DTO klasörüne erişim
+using Business.Dto; 
 using DataAccess.Abstract;
 using Entities.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -23,10 +23,9 @@ namespace Business.Concreate
 
         public List<ProductDto> GetAllProducts(Expression<Func<Product, bool>> filter = null)
         {
-            // Artık _productDal.GetAll() Include ile kategori bilgisi çekiyor
             var products = _productDal.GetAll(filter);
 
-            // Dönüşümü burada yapıyoruz:
+            
             return products.Select(p => new ProductDto
             {
                 Id = p.Id,

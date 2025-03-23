@@ -38,30 +38,27 @@ namespace ETicaretKatmanlıMimariUI.Controllers
         [HttpGet]
         public IActionResult ProductAdd()
         {
-            // Kategori listesini al (Entity veya CategoryDto fark etmez)
             var categories = _adminCategoryService.GetAllCategories();
 
-            // ViewModel oluştur
+
             var viewModel = new ProductViewModel
             {
-                // CategoryList'i dolduruyoruz:
                 CategoryList = new SelectList(categories, "Id", "Name")
             };
 
-            return View(viewModel); // Views/Admin/ProductAdd.cshtml
+            return View(viewModel); 
         }
 
         
         [HttpPost]
         public IActionResult ProductAdd(ProductViewModel model)
         {
-            // Remove these properties from ModelState validation
+           
             ModelState.Remove("CategoryList");
             ModelState.Remove("CategoryName");
 
             if (!ModelState.IsValid)
             {
-                // Validasyon hatası olursa dropdown bozulmasın diye tekrar doldur:
                 var categories = _adminCategoryService.GetAllCategories();
                 model.CategoryList = new SelectList(categories, "Id", "Name", model.CategoryId);
 
@@ -107,11 +104,10 @@ namespace ETicaretKatmanlıMimariUI.Controllers
                 CategoryId = productDto.CategoryId
             };
 
-            // Kategori listesini doldur
             var categories = _adminCategoryService.GetAllCategories();
             viewModel.CategoryList = new SelectList(categories, "Id", "Name", viewModel.CategoryId);
 
-            return View(viewModel); // Views/Admin/ProductUpdate.cshtml
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -172,14 +168,14 @@ namespace ETicaretKatmanlıMimariUI.Controllers
         public IActionResult ManageCategory()
         {
             var categories = _adminCategoryService.GetAllCategories();
-            return View(categories); // Views/Admin/ManageCategory.cshtml
+            return View(categories); 
         }
 
         // 2) Kategori Ekleme (Opsiyonel)
         [HttpGet]
         public IActionResult CategoryAdd()
         {
-            return View(); // Views/Admin/CategoryAdd.cshtml
+            return View(); 
         }
 
         [HttpPost]
@@ -200,7 +196,7 @@ namespace ETicaretKatmanlıMimariUI.Controllers
             if (category == null)
                 return NotFound();
 
-            return View(category); // Views/Admin/CategoryUpdate.cshtml
+            return View(category); 
         }
 
         [HttpPost]
@@ -232,14 +228,13 @@ namespace ETicaretKatmanlıMimariUI.Controllers
         public IActionResult ManageOrders()
         {
             var orders = _adminOrderService.GetAllOrders();
-            return View(orders); // Views/Admin/ManageOrders.cshtml
+            return View(orders); 
         }
 
         // 2) Sipariş Güncelleme
         [HttpGet]
         public IActionResult OrderUpdate(int id)
         {
-            // 1) Veritabanından Order'ı bul
             var order = _adminOrderService.GetOrderById(id);
             if (order == null) return NotFound();
 
@@ -253,10 +248,9 @@ namespace ETicaretKatmanlıMimariUI.Controllers
                 orderState = (ETicaretKatmanlıMimariUI.ViewModels.EnumOrderState)order.orderState
             };
 
-            return View(viewModel); // Views/Admin/OrderUpdate.cshtml
+            return View(viewModel); 
         }
 
-        // POST
         [HttpPost]
         public IActionResult OrderUpdate(OrderViewModel model)
         {

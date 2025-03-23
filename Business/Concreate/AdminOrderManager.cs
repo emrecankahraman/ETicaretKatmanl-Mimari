@@ -40,7 +40,6 @@ namespace Business.Concreate
 
         public void DeleteOrder(Order order)
         {
-            // Siparişin silinmesi sırasında ilgili OrderLine kayıtlarıyla ilgili ek işlemler gerekiyorsa burada yapabilirsiniz.
             _orderDal.Delete(order);
         }
     }

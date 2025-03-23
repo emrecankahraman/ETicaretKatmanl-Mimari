@@ -96,8 +96,7 @@ namespace ETicaretKatmanlıMimariUI.Controllers
 
                     _orderService.CreateOrder(cartItemDtos, orderDto);
 
-                    // Clear cart
-                    cartItemDtos.Clear();
+                     cartItemDtos.Clear();
                     _cartService.SaveCart(CartSessionKey, cartItemDtos, HttpContext);
                 }
                 catch (Exception ex)

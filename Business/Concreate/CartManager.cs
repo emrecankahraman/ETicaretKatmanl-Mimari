@@ -90,7 +90,6 @@ namespace Business.Concreate
                         cart.RemoveAt(index);
                     }
 
-                    // Eğer sepet tamamen boşaldıysa null yerine boş listeye set edelim
                     if (cart.Count == 0)
                     {
                         cart = new List<CartItemDto>();

@@ -19,6 +19,5 @@ namespace ETicaretKatmanlıMimariUI.ViewModels
         [Display(Name = "Sipariş Durumu")]
         public EnumOrderState orderState { get; set; }
 
-        // İstersen ek alanlar: Adress, City vs.
     }
 }

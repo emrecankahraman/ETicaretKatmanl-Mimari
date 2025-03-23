@@ -16,7 +16,6 @@ namespace ETicareBitirme.Core.DataAccess.EntityFramework
         public void Add(TEntity entity)
         {
             //using: IDisposable pattern implementation of c#
-            //using bittiği anda garbace collector toplar
             using (TContext context = new TContext())
             {
                 var addedEntity = context.Entry(entity);
@@ -49,8 +48,6 @@ namespace ETicareBitirme.Core.DataAccess.EntityFramework
             using (TContext context = new TContext())
             {
                 return context.Set<TEntity>().SingleOrDefault(filter);
-                //context.set -> tells hey go to this context // we will get data back 
-                //.SingleOrDefault -> youll get one ore NONE returned //like es .FirstOrDefault
             }
         }
         public TEntity Get(int id)

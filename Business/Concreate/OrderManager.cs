@@ -41,21 +41,18 @@ namespace Business.Concreate
                 OrderLines = new List<Entities.Entities.OrderLineManager>()
             };
 
-            // First save the order to get its ID
             _orderDal.Add(order);
 
-            // Now create and save each OrderLine with the Order's ID
             foreach (var item in cartItems)
             {
                 var orderLine = new Entities.Entities.OrderLineManager
                 {
-                    OrderId = order.Id, // Use the ID from the saved order
+                    OrderId = order.Id,
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
                     Price = item.ProductPrice * item.Quantity
                 };
 
-                // You'll need to add this interface and implementation
                 _orderLineDal.Add(orderLine);
             }
         }

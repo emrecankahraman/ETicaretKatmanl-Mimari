@@ -74,7 +74,6 @@ namespace ETicaretKatmanlıMimariUI.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            // Hata mesajlarını ModelState'e ekleyerek View'de göstermeyi sağlar.
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error.Description);

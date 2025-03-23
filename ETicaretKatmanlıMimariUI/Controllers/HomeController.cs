@@ -41,7 +41,6 @@ namespace ETicaretKatmanlıMimariUI.Controllers
 
         public IActionResult List(int? id)
         {
-            // Tüm kategorileri çek
             var categories = _categoryService.GetAll();
             ViewBag.Id = id ?? 0;
             ViewBag.Categories = categories;
